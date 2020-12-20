@@ -3,23 +3,28 @@
     <input type="text" required placeholder="name" v-model="name">
     <input type="email" required placeholder="email" v-model="email">
     <input type="password" required placeholder="password" v-model="password">
+    <div class="error">{{ error }}</div>
     <button>Sign up</button>
   </form>
 </template>
 
 <script>
 import { ref } from 'vue'
+import useSignup from '../composable/useSignup'
+
 export default {
   setup(){
+    const { error, signup } = useSignup()
+
     const name = ref('')
     const email = ref('')
     const password = ref('')
 
-    const handleSubmit = () => {
-      console.log(name.value, email.value, password.value)
+    const handleSubmit = async () => {
+      await signup(name.value, email.value, password.value)
     }
 
-    return { name, email, password, handleSubmit }
+    return { name, email, password, handleSubmit, error }
   }
 }
 </script>

@@ -13,7 +13,7 @@ import { ref } from 'vue'
 import useSignup from '../composable/useSignup'
 
 export default {
-  setup(){
+  setup(props, context){
     const { error, signup } = useSignup()
 
     const name = ref('')
@@ -22,6 +22,9 @@ export default {
 
     const handleSubmit = async () => {
       await signup(name.value, email.value, password.value)
+      if(!error.value){
+        context.emit('signup')
+      }
     }
 
     return { name, email, password, handleSubmit, error }

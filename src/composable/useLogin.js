@@ -11,7 +11,6 @@ const login = async (email, password) => {
     if(!response){
       throw Error('Failed login')
     }
-    console.log(response)
   }catch(e){
     error.value = e.message
     console.log(error.value)

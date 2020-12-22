@@ -16,7 +16,7 @@ export default {
     const { error, logout } = useLogout()
 
     const handleClick = async () => {
-      await useLogout()
+      await logout()
     }
 
     return { handleClick }

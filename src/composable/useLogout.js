@@ -9,7 +9,7 @@ const logout = async () => {
   try {
     await authService.signOut()
   }catch(e){
-    error.value = e.message()
+    error.value = e.message
     console.log(error.value)
   }
 }

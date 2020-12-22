@@ -3,7 +3,7 @@
     <p>Welcome</p>
     <div v-if="showLogin">
       <login @login="enterChat"></login>
-      <p>No registered yet? <span @click="showLogin = false">Sign up</span></p>
+      <p>Not registered yet? <span @click="showLogin = false">Signup</span></p>
     </div>
     <div v-else>
       <signup @signup="enterChat"></signup>

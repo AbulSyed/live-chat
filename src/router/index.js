@@ -5,7 +5,6 @@ import { authService } from '../firebase/config'
 
 const requireAuth = (to, from, next) => {
   const user = authService.currentUser
-  console.log('U', user)
   if(!user){
     next({ name: 'Welcome' })
   }else{

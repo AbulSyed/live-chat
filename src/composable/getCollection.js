@@ -1,4 +1,4 @@
-import { ref } from "vue"
+import { ref, watchEffect } from "vue"
 import { firestoreService } from "../firebase/config"
 
 const getCollection = (collection) => {
@@ -7,7 +7,7 @@ const getCollection = (collection) => {
 
   let collectionRef = firestoreService.collection(collection).orderBy('createdAt')
 
-  collectionRef.onSnapshot(snap => {
+  const unsub = collectionRef.onSnapshot(snap => {
     let results = []
     snap.docs.forEach(doc => {
       doc.data().createdAt && results.push({ ...doc.data(), id: doc.id })
@@ -17,6 +17,10 @@ const getCollection = (collection) => {
   }, (e) => {
     error.value = e.message
     console.log(error.value)
+  })
+
+  watchEffect((onInvalidate) => {
+    onInvalidate(() => ubsub())
   })
 
   return { documents, error }

@@ -2,8 +2,8 @@
   <div class="chat-window">
     <div v-if="error">{{ error }}</div>
     <div v-if="documents" class="messages" ref="scroll">
-      <div v-for="doc in formattedDocuments" :key="doc.id" class="single">
-        <span class="createdAt">{{ doc.createdAt }}</span>
+      <div v-for="doc in documents" :key="doc.id" class="single">
+        <span class="createdAt">{{ formatDistanceToNow(doc.createdAt.toDate()) }}</span>
         <span class="name">{{ doc.name }}</span>
         <span class="message">{{ doc.message }}</span>
       </div>
@@ -14,20 +14,11 @@
 <script>
 import getCollection from '../composable/getCollection'
 import { formatDistanceToNow } from 'date-fns'
-import { computed, onUpdated, ref } from 'vue'
+import { onUpdated, ref } from 'vue'
 
 export default {
   setup(){
     const { documents, error } = getCollection('messages')
-
-    const formattedDocuments = computed(() => {
-      if(documents.value){
-        return documents.value.map(doc => {
-          let time = formatDistanceToNow(doc.createdAt.toDate())
-          return { ...doc, createdAt: time }
-        })
-      }
-    })
 
     const scroll = ref(null)
 
@@ -35,7 +26,7 @@ export default {
       scroll.value.scrollTop = scroll.value.scrollHeight
     })
 
-    return { documents, error, formattedDocuments, scroll }
+    return { documents, error, formatDistanceToNow, scroll }
   }
 }
 </script>
@@ -44,6 +35,10 @@ export default {
   .chat-window {
     background: #fafafa;
     padding: 30px 20px;
+  }
+  .messages {
+    max-height: 400px;
+    overflow: auto;
   }
   .single {
     margin: 18px 0;
@@ -57,9 +52,5 @@ export default {
   .name {
     font-weight: bold;
     margin-right: 6px;
-  }
-  .messages {
-    max-height: 400px;
-    overflow: auto;
   }
 </style>
